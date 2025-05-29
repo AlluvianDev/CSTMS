@@ -39,7 +39,28 @@ public class GenericPriorityQueue<T extends Comparable<T>> {
         return highQueue.isEmpty() && mediumQueue.isEmpty() && lowQueue.isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     public T[] getAll(){
+        T[] highItems = highQueue.getAll();
+        T[] mediumItems = mediumQueue.getAll();
+        T[] lowItems = lowQueue.getAll();
 
+        int totalSize = highItems.length + mediumItems.length + lowItems.length;
+        T[] result = (T[]) new Comparable[totalSize];
+
+        int index = 0;
+        for (T item: highItems){
+            result[index] = item;
+            index++;
+        }
+        for (T item: highItems){
+            result[index] = item;
+            index++;
+        }
+        for (T item: highItems){
+            result[index] = item;
+            index++;
+        }
+        return result;
     }
 }
