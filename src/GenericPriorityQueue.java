@@ -16,10 +16,10 @@ public class GenericPriorityQueue<T extends Comparable<T>> {
             highQueue.enqueue(item);
         }
         if (str.contains("medium")){
-            highQueue.enqueue(item);
+            mediumQueue.enqueue(item);
         }
         if (str.contains("low")){
-            highQueue.enqueue(item);
+            lowQueue.enqueue(item);
         }
     }
 
