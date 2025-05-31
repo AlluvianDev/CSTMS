@@ -12,12 +12,11 @@ public class GenericQueue<T> {
         Node<T> newNode = new Node<>(item); // placed data inside the node then pointing it
         if(isEmpty()){
             head = newNode;
-            tail = newNode;
         }
         else{
             tail.next = newNode;
-            tail = newNode;
         }
+        tail = newNode;
 
     }
 

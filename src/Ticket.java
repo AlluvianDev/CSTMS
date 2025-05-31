@@ -51,13 +51,14 @@ public class Ticket implements Comparable<Ticket> {
     @Override
     public int compareTo(Ticket o) {
         int priorityCompare = Integer.compare(o.getPriorityValue(), this.getPriorityValue());
-
+        //o.getPriorityValue() <  this.getPriorityValue() returns negative number,
         if(priorityCompare != 0){
             return priorityCompare;
         }
         return this.arrivalTime.compareTo(o.arrivalTime); //if elements are equal, they are compared by arrivalTimes.
     }
 
+    @Override
     public String toString(){
         return customerName + " - " + issueDescription + " [" + getPriorityDisplay() + "]";
     }

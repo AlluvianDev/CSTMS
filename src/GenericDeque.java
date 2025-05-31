@@ -101,6 +101,7 @@ public class GenericDeque<T> {
             }
             System.out.println();
         }
+
         @SuppressWarnings("unchecked")
         public T[] getAll(){ //Returns all elements in order, as a list.
             int size = size();
