@@ -43,7 +43,7 @@ public class GenericHistory<T> {
 
     public void display(){ //	Prints the deque from front to back.
         Node<T> current = head;
-        System.out.print("Resolved tickets from first to last: ");
+        System.out.print("--- Resolved Ticket History ---");
         while (current != null) {
             System.out.print(current.data + " ");
             current = current.next;
