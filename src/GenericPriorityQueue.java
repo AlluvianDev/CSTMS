@@ -1,7 +1,7 @@
 public class GenericPriorityQueue<T extends Comparable<T>> {
-    GenericQueue<T> highQueue ;
-    GenericQueue<T> mediumQueue ;
-    GenericQueue<T> lowQueue ;
+    GenericQueue<T> highQueue;
+    GenericQueue<T> mediumQueue;
+    GenericQueue<T> lowQueue;
 
     public GenericPriorityQueue(){
         highQueue = new GenericQueue<>();
@@ -9,33 +9,34 @@ public class GenericPriorityQueue<T extends Comparable<T>> {
         lowQueue = new GenericQueue<>();
     }
 
-    public void offer(T item){  //item will be the customer ==> new,CustomerName,IssueDescription,Priority
-        String str = item.toString().toLowerCase();   //Priority will be pulled out from item and used here
+    public void offer(T item){
+        String str = item.toString().toLowerCase();
 
         if (str.contains("high")){
             highQueue.enqueue(item);
         }
-        if (str.contains("medium")){
+        else if (str.contains("medium")){
             mediumQueue.enqueue(item);
         }
-        if (str.contains("low")){
+        else if (str.contains("low")){
             lowQueue.enqueue(item);
         }
     }
 
     public T poll(){
-        if(!highQueue.isEmpty()){    //dequeues from high to low priority
+        if(!highQueue.isEmpty()){
             return highQueue.dequeue();
         }
-        if(!mediumQueue.isEmpty()){
+        else if(!mediumQueue.isEmpty()){
             return mediumQueue.dequeue();
         }
-        if(!lowQueue.isEmpty()){
+        else if(!lowQueue.isEmpty()){
             return lowQueue.dequeue();
         }
         return null;
     }
-    public boolean isEmpty(){ //if all are empty return true
+
+    public boolean isEmpty(){
         return highQueue.isEmpty() && mediumQueue.isEmpty() && lowQueue.isEmpty();
     }
 
@@ -49,18 +50,25 @@ public class GenericPriorityQueue<T extends Comparable<T>> {
         T[] result = (T[]) new Comparable[totalSize];
 
         int index = 0;
+
+        // High priority items
         for (T item: highItems){
             result[index] = item;
             index++;
         }
-        for (T item: highItems){
+
+        // Medium priority items
+        for (T item: mediumItems){
             result[index] = item;
             index++;
         }
-        for (T item: highItems){
+
+        // Low priority items
+        for (T item: lowItems){
             result[index] = item;
             index++;
         }
+
         return result;
     }
 }

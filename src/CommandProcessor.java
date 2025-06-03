@@ -1,66 +1,42 @@
-import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class CommandProcessor {
     private GenericPriorityQueue<Ticket> ticketQueue;
     private GenericHistory<Ticket> history;
     Command[] commands;
-    private int currentTime = 0;
 
     public CommandProcessor() throws IOException {
         this.ticketQueue = new GenericPriorityQueue<>();
         this.history = new GenericHistory<>();
-        commands = FileIO.readCommands("commands.csv"); // we will process this file.
+        commands = FileIO.readCommands("examplecommands.csv"); // doğru dosya adı
     }
 
     public void processCommands(){
         for (Command cmd : commands){
             switch(cmd.getType()){
                 case "new":
+                    addTicket(cmd);
                     break;
                 case "resolve":
+                    resolveTicket();
                     break;
                 case "display":
+                    displayTickets(cmd);
                     break;
                 case "history":
+                    showHistory(cmd);
                     break;
                 default:
-                    break;
-
-            }
-        }
-    }
-    /* void processCommand(){
-        /*
-        new,CustomerName,IssueDescription,Priority
-        resolve
-        display,priority
-        display,asc
-        display,desc
-        history
-        history,asc
-        history,desc
-
-        for (int i = 0; i < commands.length; i++){ //process all commands in examplecommands.csv once
-
-            switch(commands[i].getType()){
-                case "new":
-                    add(commands[i]);
-                    break;
-                case "history":
-                    break;
-                case "resolve":
-                    resolve(commands[i]);
-                    break;
-                case "display":
+                    System.out.println("Unknown command: " + cmd.getType());
                     break;
             }
         }
     }
 
-    public void add(Command command){
-        Ticket adding = new Ticket(command.getCustomerName(),command.getIssueDescription(),command.getPriority());
+    public void addTicket(Command command){
+        Ticket adding = new Ticket(command.getCustomerName(), command.getIssueDescription(), command.getPriority());
         ticketQueue.offer(adding);
         System.out.println("Adding Ticket: "
                 + adding.getCustomerName()
@@ -72,47 +48,88 @@ public class CommandProcessor {
                 + "]");
     }
 
-    public void resolve(Command command){
+    public void resolveTicket(){
+        if (ticketQueue.isEmpty()) {
+            System.out.println("No tickets to resolve.");
+            return;
+        }
+
         Ticket resolving = ticketQueue.poll();
-        System.out.println("Resolving ticket:");
+        System.out.println("Resolving Ticket:");
         System.out.println("Resolved: "
                 + resolving.getCustomerName()
                 + " - "
                 + resolving.getIssueDescription()
                 + " ["
                 + resolving.getPriority()
-                + "]" );
+                + "]");
         history.add(resolving);
     }
 
-    public void showHistory(Command command){ //show history
-        switch(command.getParameter()){
-            case "asc":
-                break;
-            case "desc":
-                break;
-            default: //normal listing (customer name alphabetic)
-                break;
-        }
-        history.display();
-    }
-
-    public void display(Command command){
+    public void displayTickets(Command command){
         Ticket[] tickets = ticketQueue.getAll();
 
-        switch(command.getParameter()){
+        if (tickets.length == 0) {
+            System.out.println("No active tickets.");
+            return;
+        }
+
+        String parameter = command.getParameter();
+        if (parameter == null) parameter = "priority";
+
+        switch(parameter){
             case "asc":
+                System.out.println("--- Displaying Active Tickets (By ASC - Oldest First) ---");
+                Arrays.sort(tickets, Comparator.comparing(Ticket::getArrivalTime));
                 break;
             case "desc":
+                System.out.println("--- Displaying Active Tickets (By DESC - Newest First) ---");
+                Arrays.sort(tickets, Comparator.comparing(Ticket::getArrivalTime).reversed());
                 break;
-            default: // priority
+            case "priority":
+            default:
+                System.out.println("--- Displaying Active Tickets (By Priority) ---");
+                Arrays.sort(tickets);
                 break;
         }
+
+        for (int i = 0; i < tickets.length; i++) {
+            System.out.println((i + 1) + ". " + tickets[i]);
+        }
     }
-    public void sortByArrivalTime(Ticket[] tickets,String toDo){
-        for (int i = 0; i < tickets.length; i++){
-            for (int j = 0; j < tickets.length ; j++){
-                if(tickets[j].getArrivalTime)
+
+    public void showHistory(Command command){
+        Ticket[] historyTickets = history.getAll();
+
+        if (historyTickets.length == 0) {
+            System.out.println("No resolved tickets in history.");
+            return;
+        }
+
+        String parameter = command.getParameter();
+
+        if (parameter == null) {
+            System.out.println("--- Resolved Ticket History (Sorted by Customer Name) ---");
+            Arrays.sort(historyTickets, Comparator.comparing(Ticket::getCustomerName));
+        } else {
+            switch(parameter){
+                case "asc":
+                    System.out.println("--- Resolved Ticket History (ASC - Oldest First) ---");
+                    Arrays.sort(historyTickets, Comparator.comparing(Ticket::getArrivalTime));
+                    break;
+                case "desc":
+                    System.out.println("--- Resolved Ticket History (DESC - Newest First) ---");
+                    Arrays.sort(historyTickets, Comparator.comparing(Ticket::getArrivalTime).reversed());
+                    break;
+                default:
+                    System.out.println("--- Resolved Ticket History (Sorted by Customer Name) ---");
+                    Arrays.sort(historyTickets, Comparator.comparing(Ticket::getCustomerName));
+                    break;
             }
-        }*/
+        }
+
+        for (int i = 0; i < historyTickets.length; i++) {
+            System.out.println((i + 1) + ". " + historyTickets[i]);
+        }
+    }
 }
