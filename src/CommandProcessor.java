@@ -1,16 +1,37 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 public class CommandProcessor {
-    GenericPriorityQueue<Ticket> ticketQueue;
-    GenericHistory<Ticket> history;
+    private GenericPriorityQueue<Ticket> ticketQueue;
+    private GenericHistory<Ticket> history;
     Command[] commands;
-    public CommandProcessor(){
-        ticketQueue = new GenericPriorityQueue<>();
-        history = new GenericHistory<>();
-        commands = FileIO.readCommandsCSV();
+    private int currentTime = 0;
+
+    public CommandProcessor() throws IOException {
+        this.ticketQueue = new GenericPriorityQueue<>();
+        this.history = new GenericHistory<>();
+        commands = FileIO.readCommands("commands.csv"); // we will process this file.
     }
-    public void processCommand(){
+
+    public void processCommands(){
+        for (Command cmd : commands){
+            switch(cmd.getType()){
+                case "new":
+                    break;
+                case "resolve":
+                    break;
+                case "display":
+                    break;
+                case "history":
+                    break;
+                default:
+                    break;
+
+            }
+        }
+    }
+    /* void processCommand(){
         /*
         new,CustomerName,IssueDescription,Priority
         resolve
@@ -20,7 +41,7 @@ public class CommandProcessor {
         history
         history,asc
         history,desc
-        */
+
         for (int i = 0; i < commands.length; i++){ //process all commands in examplecommands.csv once
 
             switch(commands[i].getType()){
@@ -93,6 +114,5 @@ public class CommandProcessor {
             for (int j = 0; j < tickets.length ; j++){
                 if(tickets[j].getArrivalTime)
             }
-        }
-    }
+        }*/
 }
