@@ -6,25 +6,22 @@ public class Command {
     private String issueDescription;
     private String priority;
     private String parameter; //asc,desc,priority
-
-    private String[] parts;
-
-    public Command(String[] parts){
-        if (Objects.equals(parts[0], "new")){
-            this.parts = parts;
-            this.type = parts[0];
-            this.customerName = parts[1];
-            this.issueDescription = parts[2];
-            this.priority = parts[3];
-        }
-        else{
-            this.parts = parts;
-            this.type = parts[0];
-            if (parts.length > 1){
-                this.parameter = parts[1];
-            }
-        }
-
+    
+    //constructor of "new" command
+    public Command(String type, String customerName, String issueDescription, String priority){
+        this.type = type;
+        this.customerName = customerName;
+        this.issueDescription = issueDescription;
+        this.priority = priority;
+    }
+    // constructor of display and history
+    public Command(String type, String parameter){
+        this.type = type;
+        this.parameter = parameter;
+    }
+    //constructor of display,history,resolve that has no parameters
+    public Command(String type){
+        this.type = type;
     }
 
     public String getType() {
@@ -54,10 +51,6 @@ public class Command {
     }
     public void setParameter(String parameter) {
         this.parameter = parameter;
-    }
-
-    public String getPart(int index) {
-        return parts[index]; //to get for example names or issues
     }
 
 }
