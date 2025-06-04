@@ -8,10 +8,11 @@ public class GenericHistory<T> {
         this.clazz = clazz;
         this.head = null;
         this.tail = null;
+        this.size = 0;
     }
 
     public void add(T item){
-        Node<T> newNode = new Node<>(item); // placed data inside the node then pointing it
+        Node<T> newNode = new Node<>(item);
         if(isEmpty()){
             head = newNode;
         }
@@ -23,28 +24,16 @@ public class GenericHistory<T> {
     }
 
     public int size() {
-        int count = 0;
-        Node<T> current = head; //temp node for while loop
-        while (current != null) {
-            count++;
-            current = current.next;
-        }
-        size = count;
-        return count;
+        return size;
     }
 
     @SuppressWarnings("unchecked")
     public T[] getAll() {
-        // Manual creation of T[] using clazz without Array.newInstance
-        // We’ll create an array of the specific type like: new String[size], new Integer[size], etc.
-        // Since we don’t know T at compile-time, we still must use reflection to create the array.
-        // But to simulate this manually with clazz, we do this:
         if (size == 0) {
-            // Return an empty array of type T[]
             return (T[]) java.lang.reflect.Array.newInstance(clazz, 0);
         }
 
-        T[] array = (T[]) java.lang.reflect.Array.newInstance(clazz, size); // still needed internally
+        T[] array = (T[]) java.lang.reflect.Array.newInstance(clazz, size);
 
         Node<T> current = head;
         int index = 0;
@@ -56,7 +45,7 @@ public class GenericHistory<T> {
         return array;
     }
 
-    public void display(){ //	Prints the deque from front to back.
+    public void display(){
         Node<T> current = head;
         System.out.print("--- Resolved Ticket History ---");
         while (current != null) {
