@@ -1,7 +1,8 @@
 public class GenericPriorityQueue<T extends Comparable<T>> {
-    GenericQueue<T> highQueue;
-    GenericQueue<T> mediumQueue;
+    
     GenericQueue<T> lowQueue;
+    GenericQueue<T> mediumQueue;
+    GenericQueue<T> highQueue;
 
     private final Class<T> clazz;
 
