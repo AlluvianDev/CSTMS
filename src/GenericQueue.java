@@ -50,6 +50,7 @@ public class GenericQueue<T> {
         return dataToReturn;
     }
 
+    //to not get ClassCastException, Array.newInstance method was used.
     @SuppressWarnings("unchecked")
     public T[] getAll() {
         if (size == 0) {
