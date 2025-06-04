@@ -8,11 +8,11 @@ public class GenericQueue<T> {
         this.clazz = clazz;
         this.head = null;
         this.tail = null;
-
+        this.size = 0;
     }
 
     public void enqueue(T item){
-        Node<T> newNode = new Node<>(item); // placed data inside the node then pointing it
+        Node<T> newNode = new Node<>(item);
         if(isEmpty()){
             head = newNode;
         }
@@ -24,7 +24,7 @@ public class GenericQueue<T> {
     }
 
     public T peek(){
-        if(!isEmpty()){ //return data of head if not empty
+        if(!isEmpty()){
             return head.data;
         }
         else{
@@ -33,22 +33,15 @@ public class GenericQueue<T> {
     }
 
     public int size() {
-        int count = 0;
-        Node<T> current = head; //temp node for while loop
-        while (current != null) {
-            count++;
-            current = current.next;
-        }
-        size = count;
-        return count;
+        return size;
     }
 
-    public T dequeue(){ //dequeues the 1st
+    public T dequeue(){
         if(isEmpty()){
             return null;
         }
 
-        T dataToReturn = head.data; // sets head.data to a temporary value, then removes head from the queue
+        T dataToReturn = head.data;
         head = head.next;
         if (head == null) {
             tail = null;
@@ -59,16 +52,11 @@ public class GenericQueue<T> {
 
     @SuppressWarnings("unchecked")
     public T[] getAll() {
-        // Manual creation of T[] using clazz without Array.newInstance
-        // We’ll create an array of the specific type like: new String[size], new Integer[size], etc.
-        // Since we don’t know T at compile-time, we still must use reflection to create the array.
-        // But to simulate this manually with clazz, we do this:
         if (size == 0) {
-            // Return an empty array of type T[]
             return (T[]) java.lang.reflect.Array.newInstance(clazz, 0);
         }
 
-        T[] array = (T[]) java.lang.reflect.Array.newInstance(clazz, size); // still needed internally
+        T[] array = (T[]) java.lang.reflect.Array.newInstance(clazz, size);
 
         Node<T> current = head;
         int index = 0;
@@ -83,5 +71,4 @@ public class GenericQueue<T> {
     public boolean isEmpty(){
         return head == null;
     }
-
 }
