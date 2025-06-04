@@ -1,61 +1,42 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class GenericHistory<T> {
-    private Node<T> head;
-    private Node<T> tail;
-    private final Class<T> clazz;
-    private int size;
+    private List<T> history;
 
-    public GenericHistory(Class<T> clazz){
-        this.clazz = clazz;
-        this.head = null;
-        this.tail = null;
-        this.size = 0;
+    public GenericHistory() {
+        history = new ArrayList<>();
     }
 
-    public void add(T item){
-        Node<T> newNode = new Node<>(item);
-        if(isEmpty()){
-            head = newNode;
-        }
-        else{
-            tail.next = newNode;
-        }
-        tail = newNode;
-        size++;
+    public void add(T item) {
+        history.add(item);
     }
 
-    public int size() {
-        return size;
+    public List<T> getAll() {
+        return new ArrayList<>(history);
     }
 
-    @SuppressWarnings("unchecked")
-    public T[] getAll() {
-        if (size == 0) {
-            return (T[]) java.lang.reflect.Array.newInstance(clazz, 0);
+    public void display() {
+        for (T item : history) {
+            System.out.println(item);
         }
-
-        T[] array = (T[]) java.lang.reflect.Array.newInstance(clazz, size);
-
-        Node<T> current = head;
-        int index = 0;
-        while (current != null) {
-            array[index++] = current.data;
-            current = current.next;
-        }
-
-        return array;
     }
 
-    public void display(){
-        Node<T> current = head;
-        System.out.print("--- Resolved Ticket History ---");
-        while (current != null) {
-            System.out.print(current.data + " ");
-            current = current.next;
+    public void displaySortedByName(Comparator<T> comparator) {
+        List<T> copy = new ArrayList<>(history);
+        copy.sort(comparator);
+        for (T item : copy) {
+            System.out.println(item);
         }
-        System.out.println();
     }
 
-    public boolean isEmpty(){
-        return head == null;
+    public void displaySortedByTime(boolean ascending) {
+        List<T> copy = new ArrayList<>(history);
+        if (ascending) Collections.reverse(copy); // since added in order, reverse for DESC
+        for (T item : copy) {
+            System.out.println(item);
+        }
     }
 }

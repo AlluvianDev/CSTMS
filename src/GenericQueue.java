@@ -1,75 +1,44 @@
 public class GenericQueue<T> {
-    private Node<T> head;
-    private Node<T> tail;
-    private final Class<T> clazz;
-    private int size;
+    private Node<T> front;
+    private Node<T> rear;
 
-    public GenericQueue(Class<T> clazz){
-        this.clazz = clazz;
-        this.head = null;
-        this.tail = null;
-        this.size = 0;
-    }
-
-    public void enqueue(T item){
+    public void enqueue(T item) {
         Node<T> newNode = new Node<>(item);
-        if(isEmpty()){
-            head = newNode;
-        }
-        else{
-            tail.next = newNode;
-        }
-        tail = newNode;
-        size++;
-    }
-
-    public T peek(){
-        if(!isEmpty()){
-            return head.data;
-        }
-        else{
-            return null;
+        if (rear == null) {
+            front = rear = newNode;
+        } else {
+            rear.setNext(newNode);
+            rear = newNode;
         }
     }
 
-    public int size() {
-        return size;
+    public T dequeue() {
+        if (isEmpty()) return null;
+        T data = front.getData();
+        front = front.getNext();
+        if (front == null) rear = null;
+        return data;
     }
 
-    public T dequeue(){
-        if(isEmpty()){
-            return null;
-        }
-
-        T dataToReturn = head.data;
-        head = head.next;
-        if (head == null) {
-            tail = null;
-        }
-        size--;
-        return dataToReturn;
+    public boolean isEmpty() {
+        return front == null;
     }
 
-    //to not get ClassCastException, Array.newInstance method was used.
-    @SuppressWarnings("unchecked")
-    public T[] getAll() {
-        if (size == 0) {
-            return (T[]) java.lang.reflect.Array.newInstance(clazz, 0);
-        }
-
-        T[] array = (T[]) java.lang.reflect.Array.newInstance(clazz, size);
-
-        Node<T> current = head;
-        int index = 0;
+    public void display() {
+        Node<T> current = front;
         while (current != null) {
-            array[index++] = current.data;
-            current = current.next;
+            System.out.println(current.getData());
+            current = current.getNext();
         }
-
-        return array;
     }
 
-    public boolean isEmpty(){
-        return head == null;
+    public java.util.List<T> getAll() {
+        java.util.List<T> list = new java.util.ArrayList<>();
+        Node<T> current = front;
+        while (current != null) {
+            list.add(current.getData());
+            current = current.getNext();
+        }
+        return list;
     }
 }

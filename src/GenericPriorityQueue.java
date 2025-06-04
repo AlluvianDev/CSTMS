@@ -1,65 +1,43 @@
 public class GenericPriorityQueue<T extends Comparable<T>> {
-    GenericQueue<T> highQueue;
-    GenericQueue<T> mediumQueue;
-    GenericQueue<T> lowQueue;
+    private GenericQueue<T> highPriority;
+    private GenericQueue<T> mediumPriority;
+    private GenericQueue<T> lowPriority;
 
-    private final Class<T> clazz;
-
-    public GenericPriorityQueue(Class<T> clazz){
-        this.clazz = clazz;
-        highQueue = new GenericQueue<>(clazz);
-        mediumQueue = new GenericQueue<>(clazz);
-        lowQueue = new GenericQueue<>(clazz);
+    public GenericPriorityQueue() {
+        highPriority = new GenericQueue<>();
+        mediumPriority = new GenericQueue<>();
+        lowPriority = new GenericQueue<>();
     }
 
-    public void offer(T item){
-        String str = item.toString().toLowerCase();
-
-        if (str.contains("high")){
-            highQueue.enqueue(item);
-        }
-        else if (str.contains("medium")){
-            mediumQueue.enqueue(item);
-        }
-        else if (str.contains("low")){
-            lowQueue.enqueue(item);
+    public void offer(T item) {
+        String priority = item.toString().toLowerCase();
+        if (priority.contains("high")) {
+            highPriority.enqueue(item);
+        } else if (priority.contains("medium")) {
+            mediumPriority.enqueue(item);
+        } else if (priority.contains("low")) {
+            lowPriority.enqueue(item);
+        } else {
+            throw new IllegalArgumentException("Unknown priority level in: " + item);
         }
     }
 
-    public T poll(){
-        if(!highQueue.isEmpty()){
-            return highQueue.dequeue();
-        }
-        else if(!mediumQueue.isEmpty()){
-            return mediumQueue.dequeue();
-        }
-        else if(!lowQueue.isEmpty()){
-            return lowQueue.dequeue();
-        }
+    public T poll() {
+        if (!highPriority.isEmpty()) return highPriority.dequeue();
+        if (!mediumPriority.isEmpty()) return mediumPriority.dequeue();
+        if (!lowPriority.isEmpty()) return lowPriority.dequeue();
         return null;
     }
 
-    public boolean isEmpty(){
-        return highQueue.isEmpty() && mediumQueue.isEmpty() && lowQueue.isEmpty();
+    public boolean isEmpty() {
+        return highPriority.isEmpty() && mediumPriority.isEmpty() && lowPriority.isEmpty();
     }
 
-
-    @SuppressWarnings("unchecked")
-    public T[] getAll() {
-        T[] highItems = highQueue.getAll();
-        T[] mediumItems = mediumQueue.getAll();
-        T[] lowItems = lowQueue.getAll();
-
-        int totalSize = highItems.length + mediumItems.length + lowItems.length;
-
-        // Proper way to create generic array of type T
-        T[] result = (T[]) java.lang.reflect.Array.newInstance(clazz, totalSize);
-
-        int index = 0;
-        for (T item : highItems) result[index++] = item;
-        for (T item : mediumItems) result[index++] = item;
-        for (T item : lowItems) result[index++] = item;
-
+    public java.util.List<T> getAll() {
+        java.util.List<T> result = new java.util.ArrayList<>();
+        result.addAll(highPriority.getAll());
+        result.addAll(mediumPriority.getAll());
+        result.addAll(lowPriority.getAll());
         return result;
     }
 }

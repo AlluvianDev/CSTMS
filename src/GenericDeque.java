@@ -1,120 +1,67 @@
 public class GenericDeque<T> {
-    private Node<T> head;
-    private Node<T> tail;
-    private final Class<T> clazz;
-    private int size;
-    
-    public GenericDeque(Class<T> clazz) {
-        this.clazz = clazz;
-        this.head = null;
-        this.tail = null;
-        this.size = 0;
-    }
-    
+    private Node<T> front;
+    private Node<T> rear;
+
     public void addFront(T item) {
         Node<T> newNode = new Node<>(item);
-        if (isEmpty()) {
-            head = newNode;
-            tail = newNode;
+        if (front == null) {
+            front = rear = newNode;
         } else {
-            newNode.next = head;
-            head.previous = newNode;
-            head = newNode;
+            newNode.setNext(front);
+            front = newNode;
         }
-        size++;
     }
-    
+
     public void addBack(T item) {
         Node<T> newNode = new Node<>(item);
-        if (isEmpty()) {
-            head = newNode;
-            tail = newNode;
+        if (rear == null) {
+            front = rear = newNode;
         } else {
-            newNode.previous = tail;
-            tail.next = newNode;
-            tail = newNode;
+            rear.setNext(newNode);
+            rear = newNode;
         }
-        size++;
     }
-    
+
     public T removeFront() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Cannot remove from empty deque");
-        }
-        
-        T dataToReturn = head.data;
-        head = head.next;
-        if (head == null) {
-            tail = null;
-        } else {
-            head.previous = null;
-        }
-        size--;
-        return dataToReturn;
+        if (front == null) return null;
+        T data = front.getData();
+        front = front.getNext();
+        if (front == null) rear = null;
+        return data;
     }
-    
+
     public T removeBack() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Cannot remove from empty deque");
+        if (rear == null) return null;
+        if (front == rear) {
+            T data = rear.getData();
+            front = rear = null;
+            return data;
         }
-        
-        T dataToReturn = tail.data;
-        if (tail == head) {
-            head = null;
-            tail = null;
-        } else {
-            tail = tail.previous;
-            tail.next = null;
+        Node<T> current = front;
+        while (current.getNext() != rear) {
+            current = current.getNext();
         }
-        size--;
-        return dataToReturn;
+        T data = rear.getData();
+        rear = current;
+        rear.setNext(null);
+        return data;
     }
-    
-    public T peek() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Cannot peek empty deque");
-        }
-        return head.data;
-    }
-    
-    public T peekBack() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Cannot peek empty deque");
-        }
-        return tail.data;
-    }
-    
-    public int size() {
-        return size;
-    }
-    
-    public boolean isEmpty() {
-        return head == null;
-    }
-    
+
     public void display() {
-        Node<T> current = head;
-        System.out.print("Deque: ");
+        Node<T> current = front;
         while (current != null) {
-            System.out.print(current.data + " ");
-            current = current.next;
+            System.out.println(current.getData());
+            current = current.getNext();
         }
-        System.out.println();
     }
-    
-    @SuppressWarnings("unchecked")
-    public T[] getAll() {
-        if (size == 0) {
-            return (T[]) java.lang.reflect.Array.newInstance(clazz, 0);
-        }
-        
-        T[] result = (T[]) java.lang.reflect.Array.newInstance(clazz, size);
-        Node<T> current = head;
-        int index = 0;
+
+    public java.util.List<T> getAll() {
+        java.util.List<T> list = new java.util.ArrayList<>();
+        Node<T> current = front;
         while (current != null) {
-            result[index++] = current.data;
-            current = current.next;
+            list.add(current.getData());
+            current = current.getNext();
         }
-        return result;
+        return list;
     }
 }

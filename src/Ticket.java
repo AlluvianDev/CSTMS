@@ -4,55 +4,51 @@ public class Ticket implements Comparable<Ticket> {
     private String priority;
     private int arrivalTime;
 
-    public Ticket(String customerName, String issueDescription, String priority, int arrivalTime){
+    public Ticket(String customerName, String issueDescription, String priority, int arrivalTime) {
         this.customerName = customerName;
         this.issueDescription = issueDescription;
         this.priority = priority;
         this.arrivalTime = arrivalTime;
     }
 
-    public String getCustomerName(){
+    public String getCustomerName() {
         return customerName;
     }
 
-    public String getIssueDescription(){
+    public String getIssueDescription() {
         return issueDescription;
     }
 
-    public String getPriority(){
+    public String getPriority() {
         return priority;
     }
 
-    public int getArrivalTime(){
+    public int getArrivalTime() {
         return arrivalTime;
     }
 
-    private int getPriorityValue(){
+    private int getPriorityValue() {
         return switch (priority.toLowerCase()) {
             case "high" -> 3;
             case "medium" -> 2;
             case "low" -> 1;
-            default -> 0;
+            default -> throw new IllegalArgumentException("Unknown priority: " + priority);
         };
     }
 
-    public String getPriorityDisplay() {
+    private String getPriorityDisplay() {
         return priority.substring(0, 1).toUpperCase() + priority.substring(1).toLowerCase();
     }
 
     @Override
-    public int compareTo(Ticket o) {
-        // First compare by priority (higher priority first)
-        int priorityCompare = Integer.compare(o.getPriorityValue(), this.getPriorityValue());
-        if(priorityCompare != 0){
-            return priorityCompare;
-        }
-        // If same priority, compare by arrival time (FIFO - earlier arrival first)
-        return Integer.compare(this.arrivalTime, o.arrivalTime);
+    public int compareTo(Ticket other) {
+        int priorityCompare = Integer.compare(other.getPriorityValue(), this.getPriorityValue());
+        if (priorityCompare != 0) return priorityCompare;
+        return Integer.compare(this.arrivalTime, other.arrivalTime);
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return customerName + " - " + issueDescription + " [" + getPriorityDisplay() + "]";
     }
 }
