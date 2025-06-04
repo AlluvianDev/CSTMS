@@ -4,16 +4,16 @@ public class Ticket implements Comparable<Ticket> {
     private String customerName;
     private String issueDescription;
     private String priority;
-    private Date arrivalTime;
+    private int arrivalTime;
 
     public Ticket(String customerName, String issueDescription, String priority){
         this.customerName = customerName;
         this.issueDescription = issueDescription;
         this.priority = priority;
-        this.arrivalTime = new Date();
+        this.arrivalTime = 0; //
     }
 
-    public Ticket(String customerName, String issueDescription, String priority, Date arrivalTime){
+    public Ticket(String customerName, String issueDescription, String priority, int arrivalTime){
         this.customerName = customerName;
         this.issueDescription = issueDescription;
         this.priority = priority;
@@ -32,7 +32,7 @@ public class Ticket implements Comparable<Ticket> {
         return priority;
     }
 
-    public Date getArrivalTime(){
+    public int getArrivalTime(){
         return arrivalTime;
     }
 
@@ -55,7 +55,7 @@ public class Ticket implements Comparable<Ticket> {
         if(priorityCompare != 0){
             return priorityCompare;
         }
-        return this.arrivalTime.compareTo(o.arrivalTime);
+        return this.arrivalTime;
     }
 
     @Override

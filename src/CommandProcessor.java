@@ -5,6 +5,7 @@ import java.util.Comparator;
 public class CommandProcessor {
     private GenericPriorityQueue<Ticket> ticketQueue;
     private GenericHistory<Ticket> history;
+    private int arrivalTime = 0;
     Command[] commands;
 
     public CommandProcessor() throws IOException {
@@ -36,7 +37,8 @@ public class CommandProcessor {
     }
 
     public void addTicket(Command command){
-        Ticket adding = new Ticket(command.getCustomerName(), command.getIssueDescription(), command.getPriority());
+        Ticket adding = new Ticket(command.getCustomerName(), command.getIssueDescription(), command.getPriority(),arrivalTime);
+        arrivalTime++;
         ticketQueue.offer(adding);
         System.out.println("\nAdding Ticket: "
                 + adding.getCustomerName()
