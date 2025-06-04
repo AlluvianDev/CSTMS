@@ -1,9 +1,11 @@
 public class GenericDeque<T> {
     private Node<T> head;
     private Node<T> tail;
+    private final Class<T> clazz;
     private int size;
     
-    public GenericDeque() {
+    public GenericDeque(Class<T> clazz) {
+        this.clazz = clazz;
         this.head = null;
         this.tail = null;
         this.size = 0;
@@ -102,7 +104,11 @@ public class GenericDeque<T> {
     
     @SuppressWarnings("unchecked")
     public T[] getAll() {
-        T[] result = (T[]) new Object[size];
+        if (size == 0) {
+            return (T[]) java.lang.reflect.Array.newInstance(clazz, 0);
+        }
+        
+        T[] result = (T[]) java.lang.reflect.Array.newInstance(clazz, size);
         Node<T> current = head;
         int index = 0;
         while (current != null) {
