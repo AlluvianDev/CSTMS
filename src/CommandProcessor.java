@@ -11,7 +11,7 @@ public class CommandProcessor {
     public CommandProcessor() throws IOException {
         this.ticketQueue = new GenericPriorityQueue<>(Ticket.class);
         this.history = new GenericHistory<>(Ticket.class);
-        commands = FileIO.readCommands("examplecommands.csv"); // doğru dosya adı
+        commands = FileIO.readCommands("../examplecommands.csv"); // Goes up one directory level to find the input file
     }
 
     public void processCommands(){
