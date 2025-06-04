@@ -19,4 +19,5 @@ resolve
 resolve
 history
 history,asc
-history,desc.
+history,desc
+display,priority

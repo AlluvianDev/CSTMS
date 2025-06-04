@@ -8,9 +8,9 @@ public class CommandProcessor {
     Command[] commands;
 
     public CommandProcessor() throws IOException {
-        this.ticketQueue = new GenericPriorityQueue<>();
-        this.history = new GenericHistory<>();
-        commands = FileIO.readCommands("examplecommands.csv"); // doğru dosya adı
+        this.ticketQueue = new GenericPriorityQueue<>(Ticket.class);
+        this.history = new GenericHistory<>(Ticket.class);
+        commands = FileIO.readCommands("src/examplecommands.csv"); // doğru dosya adı
     }
 
     public void processCommands(){
@@ -38,7 +38,7 @@ public class CommandProcessor {
     public void addTicket(Command command){
         Ticket adding = new Ticket(command.getCustomerName(), command.getIssueDescription(), command.getPriority());
         ticketQueue.offer(adding);
-        System.out.println("Adding Ticket: "
+        System.out.println("\nAdding Ticket: "
                 + adding.getCustomerName()
                 + " - "
                 + adding.getIssueDescription()
@@ -55,7 +55,7 @@ public class CommandProcessor {
         }
 
         Ticket resolving = ticketQueue.poll();
-        System.out.println("Resolving Ticket:");
+        System.out.println("\nResolving Ticket:");
         System.out.println("Resolved: "
                 + resolving.getCustomerName()
                 + " - "
@@ -70,7 +70,7 @@ public class CommandProcessor {
         Ticket[] tickets = ticketQueue.getAll();
 
         if (tickets.length == 0) {
-            System.out.println("No active tickets.");
+            System.out.println("\nNo active tickets.");
             return;
         }
 
@@ -79,18 +79,16 @@ public class CommandProcessor {
 
         switch(parameter){
             case "asc":
-                System.out.println("--- Displaying Active Tickets (By ASC - Oldest First) ---");
+                System.out.println("\n--- Displaying Active Tickets (By ASC - Oldest First) ---");
                 Arrays.sort(tickets, Comparator.comparing(Ticket::getArrivalTime));
                 break;
             case "desc":
-                System.out.println("--- Displaying Active Tickets (By DESC - Newest First) ---");
+                System.out.println("\n--- Displaying Active Tickets (By DESC - Newest First) ---");
                 Arrays.sort(tickets, Comparator.comparing(Ticket::getArrivalTime).reversed());
                 break;
             case "priority":
-            default:
-                System.out.println("--- Displaying Active Tickets (By Priority) ---");
+                System.out.println("\n--- Displaying Active Tickets (By Priority) ---");
                 Arrays.sort(tickets);
-                break;
         }
 
         for (int i = 0; i < tickets.length; i++) {
@@ -109,20 +107,20 @@ public class CommandProcessor {
         String parameter = command.getParameter();
 
         if (parameter == null) {
-            System.out.println("--- Resolved Ticket History (Sorted by Customer Name) ---");
+            System.out.println("\n--- Resolved Ticket History (Sorted by Customer Name) ---");
             Arrays.sort(historyTickets, Comparator.comparing(Ticket::getCustomerName));
         } else {
             switch(parameter){
                 case "asc":
-                    System.out.println("--- Resolved Ticket History (ASC - Oldest First) ---");
+                    System.out.println("\n--- Resolved Ticket History (ASC - Oldest First) ---");
                     Arrays.sort(historyTickets, Comparator.comparing(Ticket::getArrivalTime));
                     break;
                 case "desc":
-                    System.out.println("--- Resolved Ticket History (DESC - Newest First) ---");
+                    System.out.println("\n--- Resolved Ticket History (DESC - Newest First) ---");
                     Arrays.sort(historyTickets, Comparator.comparing(Ticket::getArrivalTime).reversed());
                     break;
                 default:
-                    System.out.println("--- Resolved Ticket History (Sorted by Customer Name) ---");
+                    System.out.println("\n--- Resolved Ticket History (Sorted by Customer Name) ---");
                     Arrays.sort(historyTickets, Comparator.comparing(Ticket::getCustomerName));
                     break;
             }

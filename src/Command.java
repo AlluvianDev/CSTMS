@@ -1,7 +1,5 @@
-import java.util.Objects;
-
 public class Command {
-    private String type;
+    private final String type;
     private String customerName;
     private String issueDescription;
     private String priority;
@@ -38,19 +36,6 @@ public class Command {
     }
     public String getParameter() {
         return parameter;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-    public void setIssueDescription(String issueDescription) {
-        this.issueDescription = issueDescription;
-    }
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-    public void setParameter(String parameter) {
-        this.parameter = parameter;
     }
 
 }

@@ -3,10 +3,13 @@ public class GenericPriorityQueue<T extends Comparable<T>> {
     GenericQueue<T> mediumQueue;
     GenericQueue<T> lowQueue;
 
-    public GenericPriorityQueue(){
-        highQueue = new GenericQueue<>();
-        mediumQueue = new GenericQueue<>();
-        lowQueue = new GenericQueue<>();
+    private final Class<T> clazz;
+
+    public GenericPriorityQueue(Class<T> clazz){
+        this.clazz = clazz;
+        highQueue = new GenericQueue<>(clazz);
+        mediumQueue = new GenericQueue<>(clazz);
+        lowQueue = new GenericQueue<>(clazz);
     }
 
     public void offer(T item){
@@ -40,34 +43,22 @@ public class GenericPriorityQueue<T extends Comparable<T>> {
         return highQueue.isEmpty() && mediumQueue.isEmpty() && lowQueue.isEmpty();
     }
 
+
     @SuppressWarnings("unchecked")
-    public T[] getAll(){
+    public T[] getAll() {
         T[] highItems = highQueue.getAll();
         T[] mediumItems = mediumQueue.getAll();
         T[] lowItems = lowQueue.getAll();
 
         int totalSize = highItems.length + mediumItems.length + lowItems.length;
-        T[] result = (T[]) new Comparable[totalSize];
+
+        // Proper way to create generic array of type T
+        T[] result = (T[]) java.lang.reflect.Array.newInstance(clazz, totalSize);
 
         int index = 0;
-
-        // High priority items
-        for (T item: highItems){
-            result[index] = item;
-            index++;
-        }
-
-        // Medium priority items
-        for (T item: mediumItems){
-            result[index] = item;
-            index++;
-        }
-
-        // Low priority items
-        for (T item: lowItems){
-            result[index] = item;
-            index++;
-        }
+        for (T item : highItems) result[index++] = item;
+        for (T item : mediumItems) result[index++] = item;
+        for (T item : lowItems) result[index++] = item;
 
         return result;
     }

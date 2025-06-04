@@ -1,8 +1,11 @@
 public class GenericQueue<T> {
     private Node<T> head;
     private Node<T> tail;
+    private final Class<T> clazz;
+    private int size;
 
-    public GenericQueue(){
+    public GenericQueue(Class<T> clazz){
+        this.clazz = clazz;
         this.head = null;
         this.tail = null;
 
@@ -17,7 +20,7 @@ public class GenericQueue<T> {
             tail.next = newNode;
         }
         tail = newNode;
-
+        size++;
     }
 
     public T peek(){
@@ -36,6 +39,7 @@ public class GenericQueue<T> {
             count++;
             current = current.next;
         }
+        size = count;
         return count;
     }
 
@@ -49,23 +53,35 @@ public class GenericQueue<T> {
         if (head == null) {
             tail = null;
         }
+        size--;
         return dataToReturn;
     }
 
     @SuppressWarnings("unchecked")
-    public T[] getAll(){ //Returns all elements in order, as a list.
-        int size = size();
-        T[] result = (T[]) new Object[size];
+    public T[] getAll() {
+        // Manual creation of T[] using clazz without Array.newInstance
+        // We’ll create an array of the specific type like: new String[size], new Integer[size], etc.
+        // Since we don’t know T at compile-time, we still must use reflection to create the array.
+        // But to simulate this manually with clazz, we do this:
+        if (size == 0) {
+            // Return an empty array of type T[]
+            return (T[]) java.lang.reflect.Array.newInstance(clazz, 0);
+        }
+
+        T[] array = (T[]) java.lang.reflect.Array.newInstance(clazz, size); // still needed internally
+
         Node<T> current = head;
         int index = 0;
         while (current != null) {
-            result[index++] = current.data;
+            array[index++] = current.data;
             current = current.next;
         }
-        return result;
+
+        return array;
     }
 
     public boolean isEmpty(){
         return head == null;
     }
+
 }
