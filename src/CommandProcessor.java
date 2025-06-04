@@ -91,6 +91,7 @@ public class CommandProcessor {
             case "priority":
                 System.out.println("\n--- Displaying Active Tickets (By Priority) ---");
                 Arrays.sort(tickets);
+                break;
         }
 
         for (int i = 0; i < tickets.length; i++) {
