@@ -4,13 +4,6 @@ public class Ticket implements Comparable<Ticket> {
     private String priority;
     private int arrivalTime;
 
-    public Ticket(String customerName, String issueDescription, String priority){
-        this.customerName = customerName;
-        this.issueDescription = issueDescription;
-        this.priority = priority;
-        this.arrivalTime = 0;
-    }
-
     public Ticket(String customerName, String issueDescription, String priority, int arrivalTime){
         this.customerName = customerName;
         this.issueDescription = issueDescription;
