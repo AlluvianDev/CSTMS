@@ -1,1 +1,2 @@
-CENG112 HOMEWORK 2
+# Homework2
+CENG112 Homework 2
