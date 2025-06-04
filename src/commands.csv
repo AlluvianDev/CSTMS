@@ -1,8 +1,0 @@
-new,CustomerName,IssueDescription,Priority
-resolve
-display,priority
-display,asc
-display,desc
-history
-history,asc
-history,desc
