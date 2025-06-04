@@ -1,5 +1,3 @@
-import java.util.Date;
-
 public class Ticket implements Comparable<Ticket> {
     private String customerName;
     private String issueDescription;
@@ -10,7 +8,7 @@ public class Ticket implements Comparable<Ticket> {
         this.customerName = customerName;
         this.issueDescription = issueDescription;
         this.priority = priority;
-        this.arrivalTime = 0; //
+        this.arrivalTime = 0;
     }
 
     public Ticket(String customerName, String issueDescription, String priority, int arrivalTime){
@@ -51,11 +49,13 @@ public class Ticket implements Comparable<Ticket> {
 
     @Override
     public int compareTo(Ticket o) {
+        // First compare by priority (higher priority first)
         int priorityCompare = Integer.compare(o.getPriorityValue(), this.getPriorityValue());
         if(priorityCompare != 0){
             return priorityCompare;
         }
-        return this.arrivalTime;
+        // If same priority, compare by arrival time (FIFO - earlier arrival first)
+        return Integer.compare(this.arrivalTime, o.arrivalTime);
     }
 
     @Override
