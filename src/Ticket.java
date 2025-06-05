@@ -1,16 +1,18 @@
 public class Ticket implements Comparable<Ticket> {
+	private static int nextArrivalTime = 0;
     private String customerName;
     private String issueDescription;
     private String priority;
     private int arrivalTime;
-
+    
+    //automated arrivalTime setting
     public Ticket(String customerName, String issueDescription, String priority){
         this.customerName = customerName;
         this.issueDescription = issueDescription;
         this.priority = priority;
-        this.arrivalTime = 0;
+        this.arrivalTime = nextArrivalTime++;
     }
-
+    //manual arrivalTime setting
     public Ticket(String customerName, String issueDescription, String priority, int arrivalTime){
         this.customerName = customerName;
         this.issueDescription = issueDescription;
