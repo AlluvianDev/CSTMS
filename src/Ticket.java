@@ -1,5 +1,5 @@
 public class Ticket implements Comparable<Ticket> {
-	private static int nextArrivalTime = 0;
+    private static int nextArrivalTime = 0;
     private String customerName;
     private String issueDescription;
     private String priority;
