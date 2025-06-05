@@ -5,7 +5,6 @@ import java.util.Comparator;
 public class CommandProcessor {
     private GenericPriorityQueue<Ticket> ticketQueue;
     private GenericHistory<Ticket> history;
-    private int arrivalTime = 0;
     Command[] commands;
 
     public CommandProcessor() throws IOException {
@@ -37,8 +36,7 @@ public class CommandProcessor {
     }
 
     public void addTicket(Command command){
-        Ticket adding = new Ticket(command.getCustomerName(), command.getIssueDescription(), command.getPriority(),arrivalTime);
-        arrivalTime++;
+        Ticket adding = new Ticket(command.getCustomerName(), command.getIssueDescription(), command.getPriority());
         ticketQueue.offer(adding);
         System.out.println("\nAdding Ticket: "
                 + adding.getCustomerName()
@@ -114,13 +112,17 @@ public class CommandProcessor {
             Arrays.sort(historyTickets, Comparator.comparing(Ticket::getCustomerName));
         } else {
             switch(parameter){
-                case "asc":
-                    System.out.println("\n--- Resolved Ticket History (ASC - Oldest First) ---");
-                    Arrays.sort(historyTickets, Comparator.comparing(Ticket::getArrivalTime));
-                    break;
+	            case "asc":
+	                System.out.println("\n--- Resolved Ticket History (ASC - Oldest First) ---");
+	               
+	                break;
                 case "desc":
                     System.out.println("\n--- Resolved Ticket History (DESC - Newest First) ---");
-                    Arrays.sort(historyTickets, Comparator.comparing(Ticket::getArrivalTime).reversed());
+                    for (int i = 0; i < historyTickets.length / 2; i++) {
+                        Ticket temp = historyTickets[i];
+                        historyTickets[i] = historyTickets[historyTickets.length - 1 - i];
+                        historyTickets[historyTickets.length - 1 - i] = temp;
+                    }
                     break;
                 default:
                     System.out.println("\n--- Resolved Ticket History (Sorted by Customer Name) ---");
