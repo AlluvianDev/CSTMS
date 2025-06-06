@@ -5,23 +5,25 @@ public class Command {
     private String priority;
     private String parameter; //asc,desc,priority
     
-    //constructor of "new" command
+    // Constructor of "new" command
     public Command(String type, String customerName, String issueDescription, String priority){
         this.type = type;
         this.customerName = customerName;
         this.issueDescription = issueDescription;
         this.priority = priority;
     }
-    // constructor of display and history
+    // Constructor of display and history
     public Command(String type, String parameter){
         this.type = type;
         this.parameter = parameter;
     }
-    //constructor of display,history,resolve that has no parameters
+    
+    // Constructor of display,history,resolve that has no parameters
     public Command(String type){
         this.type = type;
     }
 
+    // Getters of the Command Class
     public String getType() {
         return type;
     }
