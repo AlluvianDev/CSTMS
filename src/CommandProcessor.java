@@ -112,7 +112,7 @@ public class CommandProcessor {
             Arrays.sort(historyTickets, Comparator.comparing(Ticket::getCustomerName));
         } else {
             switch(parameter){
-	            case "asc":
+	        case "asc":
 	                System.out.println("\n--- Resolved Ticket History (ASC - Oldest First) ---");
 	               
 	                break;
