@@ -10,7 +10,7 @@ public class CommandProcessor {
     public CommandProcessor() throws IOException {
         this.ticketQueue = new GenericPriorityQueue<>(Ticket.class);
         this.history = new GenericHistory<>(Ticket.class);
-        commands = FileIO.readCommands("./examplecommands.csv");
+        commands = FileIO.readCommands("./examplecommands.csv"); // Goes up one directory level to find the input file !!! WHY ECLIPSE CAN NOT RESOLVE ../ !!!
     }
 
     public void processCommands(){
@@ -50,7 +50,7 @@ public class CommandProcessor {
 
     public void resolveTicket(){
         if (ticketQueue.isEmpty()) {
-            System.out.println("\nNo tickets to resolve.");
+            System.out.println("No tickets to resolve.");
             return;
         }
 
@@ -101,7 +101,7 @@ public class CommandProcessor {
         Ticket[] historyTickets = history.getAll();
 
         if (historyTickets.length == 0) {
-            System.out.println("\nNo resolved tickets in history.");
+            System.out.println("No resolved tickets in history.");
             return;
         }
 
@@ -112,14 +112,12 @@ public class CommandProcessor {
             Arrays.sort(historyTickets, Comparator.comparing(Ticket::getCustomerName));
         } else {
             switch(parameter){
-                case "asc":
-                    System.out.println("\n--- Resolved Ticket History (ASC - Oldest First) ---");
-                    // History is already in chronological order (oldest first)
-                    // No additional sorting needed since tickets are added to history in resolution order
-                    break;
+	            case "asc":
+	                System.out.println("\n--- Resolved Ticket History (ASC - Oldest First) ---");
+	               
+	                break;
                 case "desc":
                     System.out.println("\n--- Resolved Ticket History (DESC - Newest First) ---");
-                    // Reverse the array to show newest first
                     for (int i = 0; i < historyTickets.length / 2; i++) {
                         Ticket temp = historyTickets[i];
                         historyTickets[i] = historyTickets[historyTickets.length - 1 - i];
