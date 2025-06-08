@@ -2,37 +2,30 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-/**
- * FileIO class responsible for reading and parsing CSV commands from a file.
- * Returns an array of Command objects that can be processed by CommandProcessor.
- */
+// Reads and parses CSV commands from a file
 public class FileIO {
     
-    /**
-     * Reads commands from a CSV file and returns an array of Command objects.
-     * 
-     * @param filename The path to the CSV file containing commands
-     * @return Array of Command objects parsed from the file
-     * @throws IOException if there's an error reading the file
-     */
+    // Reads commands from a CSV file and returns Command objects
     public static Command[] readCommands(String filename) throws IOException {
-        // First pass: count the number of valid commands
+        // Count valid commands first to create exact-size array
         int commandCount = countValidCommands(filename);
         
         // Create array with exact size needed
         Command[] commands = new Command[commandCount];
         int index = 0;
         
+        // Use try-with-resources to ensure file is closed automatically
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             
+            // Read each line from the file
             while ((line = br.readLine()) != null) {
                 // Skip empty lines
                 if (line.trim().isEmpty()) {
                     continue;
                 }
                 
-                // Parse the line and create a Command object
+                // Parse line into Command object
                 Command command = parseCommand(line.trim());
                 if (command != null) {
                     commands[index++] = command;
@@ -43,24 +36,22 @@ public class FileIO {
         return commands;
     }
     
-    /**
-     * Counts the number of valid commands in the file to determine array size.
-     * 
-     * @param filename The path to the CSV file
-     * @return Number of valid commands in the file
-     * @throws IOException if there's an error reading the file
-     */
+    // Counts valid commands in the file
     private static int countValidCommands(String filename) throws IOException {
         int count = 0;
         
+        // Use try-with-resources for automatic file closing
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             
+            // Read each line to count valid commands
             while ((line = br.readLine()) != null) {
+                // Skip empty lines
                 if (line.trim().isEmpty()) {
                     continue;
                 }
                 
+                // Check if line can be parsed into valid command
                 Command command = parseCommand(line.trim());
                 if (command != null) {
                     count++;
@@ -71,23 +62,21 @@ public class FileIO {
         return count;
     }
     
-    /**
-     * Parses a single line from the CSV file and creates a Command object.
-     * 
-     * @param line A single line from the CSV file
-     * @return Command object representing the parsed command, or null if parsing fails
-     */
+    // Parses a CSV line into a Command object
     private static Command parseCommand(String line) {
         try {
-            // Split the line by comma manually
+            // Split line by commas
             String[] parts = splitByComma(line);
             
+            // Return null if no parts found
             if (parts.length == 0) {
                 return null;
             }
             
+            // Get command type (first part)
             String commandType = parts[0].trim();
             
+            // Handle different command types
             switch (commandType.toLowerCase()) {
                 case "new":
                     // new,CustomerName,IssueDescription,Priority
@@ -100,6 +89,7 @@ public class FileIO {
                     break;
                     
                 case "resolve":
+                    // resolve (no additional parameters)
                     return new Command("resolve");
                     
                 case "display":
@@ -121,10 +111,12 @@ public class FileIO {
                     }
                     
                 default:
+                    // Unknown command type
                     System.err.println("Unknown command type: " + commandType);
                     return null;
             }
         } catch (Exception e) {
+            // Handle any parsing errors
             System.err.println("Error parsing command: " + line + " - " + e.getMessage());
             return null;
         }
@@ -132,13 +124,9 @@ public class FileIO {
         return null;
     }
     
-    /**
-     * Manually splits a string by comma character.
-     * 
-     * @param input The string to split
-     * @return Array of string parts
-     */
+    // Splits a string by commas
     private static String[] splitByComma(String input) {
+        // Handle null or empty input
         if (input == null || input.isEmpty()) {
             return new String[0];
         }
@@ -156,30 +144,27 @@ public class FileIO {
         int partIndex = 0;
         int startIndex = 0;
         
+        // Split string at each comma
         for (int i = 0; i < input.length(); i++) {
             if (input.charAt(i) == ',') {
                 parts[partIndex++] = input.substring(startIndex, i);
-                startIndex = i + 1;
+                startIndex = i + 1; // Start after the comma
             }
         }
         
-        // Add the last part
+        // Add the last part (after final comma or entire string if no commas)
         parts[partIndex] = input.substring(startIndex);
         
         return parts;
     }
     
-    /**
-     * Alternative method that accepts a filename and handles IOException internally.
-     * Prints error message and returns empty array if file reading fails.
-     * 
-     * @param filename The path to the CSV file containing commands
-     * @return Array of Command objects, or empty array if reading fails
-     */
+    // Reads commands safely, returning empty array on error
     public static Command[] readCommandsSafe(String filename) {
         try {
+            // Try to read commands normally
             return readCommands(filename);
         } catch (IOException e) {
+            // Print error and return empty array if file reading fails
             System.err.println("Error reading file: " + filename + " - " + e.getMessage());
             return new Command[0];
         }
