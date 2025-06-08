@@ -100,7 +100,6 @@ public class FileIO {
                     break;
                     
                 case "resolve":
-                    // resolve
                     return new Command("resolve");
                     
                 case "display":
