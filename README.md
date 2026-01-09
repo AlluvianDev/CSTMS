@@ -116,13 +116,3 @@ Displaying Active Tickets (By Priority)
 1. Jane Smith - Payment issue [Low]
 Resolved Ticket History (Sorted by Customer Name)
 1. John Doe - Internet not working [High]
-
-```
-
----
-
-> [!IMPORTANT]
-> Bu proje **CENG112 Data Structures** dersi ödevi kapsamında geliştirilmiştir. Proje dosyalarının `G05_CENG112_HW2` formatında adlandırılması ve teslim edilmesi gerekmektedir.
-> 
-> 
-
